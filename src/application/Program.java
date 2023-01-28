@@ -1,7 +1,7 @@
 package application;
 
-import entities.Department;
-import entities.Seller;
+import repository.entities.Department;
+import repository.entities.Seller;
 
 import java.time.LocalDate;
 
