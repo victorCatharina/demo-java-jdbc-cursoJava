@@ -10,9 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class SellerDaoJDBC implements SellerDao {
 
@@ -40,7 +38,6 @@ public class SellerDaoJDBC implements SellerDao {
 
     @Override
     public void deleteById(Integer id) {
-
 
     }
 
@@ -120,7 +117,40 @@ public class SellerDaoJDBC implements SellerDao {
 
     @Override
     public List<Seller> findAll() {
-        return null;
+
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        List<Seller> list = new ArrayList<>();
+        Set<Department> departments = new HashSet<>();
+
+        try {
+
+            statement = conn.prepareStatement(BASE_CONSULT_QUERY.toString());
+            resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+
+                Department department = instantiateDepartment(resultSet);
+
+                departments.add(department);
+
+                Seller seller = instantiateSeller(resultSet, departments.stream()
+                        .filter(dep -> dep.equals(department)).findFirst().orElse(null));
+
+                list.add(seller);
+            }
+
+            return list;
+
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+
+        } finally {
+
+            DB.closeStatement(statement);
+            DB.closeResultSet(resultSet);
+        }
     }
 
     private Seller instantiateSeller(ResultSet resultSet, Department dep) throws SQLException {

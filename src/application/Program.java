@@ -5,8 +5,6 @@ import repository.dao.DaoFactory;
 import repository.dao.SellerDao;
 import repository.entities.Department;
 
-import java.util.Arrays;
-
 public class Program {
     public static void main(String[] args) {
 
@@ -18,6 +16,9 @@ public class Program {
         System.out.printf("%n=== TEST 2: seller findByDepartment ===%n");
         sellerDao.findByDepartment(new Department(2, null))
                 .forEach(System.out::println);
+
+        System.out.printf("%n=== TEST 3: seller findAll ===%n");
+        sellerDao.findAll().forEach(System.out::println);
 
         DB.closeConnection();
     }
