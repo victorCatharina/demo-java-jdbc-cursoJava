@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -76,6 +77,52 @@ public class SellerDaoJDBC implements SellerDao {
         return Optional.empty();
     }
 
+    @Override
+    public List<Seller> findByDepartment(Department department) {
+
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        List<Seller> list = new ArrayList<>();
+        Department dep = null;
+
+        try {
+
+            statement = conn.prepareStatement(BASE_CONSULT_QUERY.toString()
+                    .concat(" WHERE s.DepartmentId = ?"));
+
+            statement.setInt(1, department.getId());
+            resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+
+                if (dep == null) {
+                    dep = instantiateDepartment(resultSet);
+                }
+
+                Seller seller = instantiateSeller(resultSet, dep);
+
+                list.add(seller);
+            }
+
+            return list;
+
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+
+        } finally {
+
+            DB.closeStatement(statement);
+            DB.closeResultSet(resultSet);
+        }
+
+    }
+
+    @Override
+    public List<Seller> findAll() {
+        return null;
+    }
+
     private Seller instantiateSeller(ResultSet resultSet, Department dep) throws SQLException {
 
         return new Seller(resultSet.getInt("Id"),
@@ -91,10 +138,5 @@ public class SellerDaoJDBC implements SellerDao {
         return new Department(resultSet.getInt("departmentId"),
                 resultSet.getString("depName"));
 
-    }
-
-    @Override
-    public List<Seller> findAll() {
-        return null;
     }
 }

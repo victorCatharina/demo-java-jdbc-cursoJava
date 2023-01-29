@@ -2,14 +2,22 @@ package application;
 
 import db.DB;
 import repository.dao.DaoFactory;
+import repository.dao.SellerDao;
+import repository.entities.Department;
+
+import java.util.Arrays;
 
 public class Program {
     public static void main(String[] args) {
 
-        System.out.println("=== TEST 1: seller findById ===");
+        SellerDao sellerDao = DaoFactory.createSellerDao();
 
-        System.out.println(DaoFactory.createSellerDao()
-                .findById(3).orElse(null));
+        System.out.printf("%n=== TEST 1: seller findById ===%n");
+        System.out.println(sellerDao.findById(3).orElse(null));
+
+        System.out.printf("%n=== TEST 2: seller findByDepartment ===%n");
+        sellerDao.findByDepartment(new Department(2, null))
+                .forEach(System.out::println);
 
         DB.closeConnection();
     }

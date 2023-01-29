@@ -1,5 +1,6 @@
 package repository.dao;
 
+import repository.entities.Department;
 import repository.entities.Seller;
 
 import java.util.List;
@@ -14,6 +15,8 @@ public interface SellerDao {
     void deleteById(Integer id);
 
     Optional<Seller> findById(Integer id);
+
+    List<Seller> findByDepartment(Department department);
 
     List<Seller> findAll();
 }
