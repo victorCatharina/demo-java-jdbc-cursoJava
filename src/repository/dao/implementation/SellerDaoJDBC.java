@@ -10,7 +10,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,15 +58,9 @@ public class SellerDaoJDBC implements SellerDao {
 
             if (resultSet.next()) {
 
-                Department dep = new Department(resultSet.getInt("departmentId"),
-                        resultSet.getString("depName"));
+                Department dep = instantiateDepartment(resultSet);
 
-                Seller seller = new Seller(resultSet.getInt("Id"),
-                        resultSet.getString("Name"),
-                        resultSet.getString("Email"),
-                        resultSet.getDate("BirthDate").toLocalDate(),
-                        resultSet.getDouble("BaseSalary"),
-                        dep);
+                Seller seller = instantiateSeller(resultSet, dep);
 
                 return Optional.of(seller);
             }
@@ -81,6 +74,23 @@ public class SellerDaoJDBC implements SellerDao {
         }
 
         return Optional.empty();
+    }
+
+    private Seller instantiateSeller(ResultSet resultSet, Department dep) throws SQLException {
+
+        return new Seller(resultSet.getInt("Id"),
+                resultSet.getString("Name"),
+                resultSet.getString("Email"),
+                resultSet.getDate("BirthDate").toLocalDate(),
+                resultSet.getDouble("BaseSalary"),
+                dep);
+    }
+
+    private Department instantiateDepartment(ResultSet resultSet) throws SQLException {
+
+        return new Department(resultSet.getInt("departmentId"),
+                resultSet.getString("depName"));
+
     }
 
     @Override

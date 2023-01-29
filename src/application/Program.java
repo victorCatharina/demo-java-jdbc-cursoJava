@@ -6,6 +6,8 @@ import repository.dao.DaoFactory;
 public class Program {
     public static void main(String[] args) {
 
+        System.out.println("=== TEST 1: seller findById ===");
+
         System.out.println(DaoFactory.createSellerDao()
                 .findById(3).orElse(null));
 
