@@ -7,9 +7,12 @@ import repository.entities.Department;
 import repository.entities.Seller;
 
 import java.time.LocalDate;
+import java.util.Scanner;
 
 public class Program {
     public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
 
         SellerDao sellerDao = DaoFactory.createSellerDao();
 
@@ -31,13 +34,22 @@ public class Program {
         System.out.println("Generated Key: " + sellerDao.insert(newSeller));
 
 
-        System.out.printf("%n=== TEST 5: seller Insert ===%n");
+        System.out.printf("%n=== TEST 5: seller Update ===%n");
         Seller updatedSeller = sellerDao.findById(1).orElse(null);
         assert updatedSeller != null;
         updatedSeller.setName("Martha Wai");
         sellerDao.update(updatedSeller);
         System.out.println("Update completed");
 
+        System.out.printf("%n=== TEST 6: seller delete ===%n");
+
+        System.out.println("Enter id for delete test: ");
+        int id = sc.nextInt();
+
+        sellerDao.deleteById(id);
+        System.out.println("Delete completed");
+
+        sc.close();
         DB.closeConnection();
     }
 }
