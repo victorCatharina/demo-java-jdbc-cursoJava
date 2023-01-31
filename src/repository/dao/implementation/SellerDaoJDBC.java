@@ -6,10 +6,8 @@ import repository.dao.SellerDao;
 import repository.entities.Department;
 import repository.entities.Seller;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.Date;
+import java.sql.*;
 import java.util.*;
 
 public class SellerDaoJDBC implements SellerDao {
@@ -21,18 +19,78 @@ public class SellerDaoJDBC implements SellerDao {
             .append("FROM seller s ")
             .append("INNER JOIN department d ON s.DepartmentId = d.id ");
 
-
     public SellerDaoJDBC(Connection conn) {
         this.conn = conn;
     }
 
     @Override
-    public void insert(Seller seller) {
+    public Integer insert(Seller seller) {
+
+        String insertQuery = "INSERT INTO seller (Name, Email, BirthDate, BaseSalary, DepartmentId) " +
+                "VALUES (?, ?, ?, ?, ?)";
+
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+
+            statement = conn.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS);
+
+            statement.setString(1, seller.getName());
+            statement.setString(2, seller.getEmail());
+            statement.setDate(3, Date.valueOf(seller.getBirthDate()));
+            statement.setDouble(4, seller.getBaseSalary());
+            statement.setInt(5, seller.getDepartment().getId());
+
+            if (statement.executeUpdate() == 0) {
+
+                throw new DbException("Unexpected error! No rows affected!");
+            }
+
+            resultSet = statement.getGeneratedKeys();
+            resultSet.next();
+
+            return resultSet.getInt(1);
+
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally {
+            DB.closeStatement(statement);
+            DB.closeResultSet(resultSet);
+        }
 
     }
 
     @Override
     public void update(Seller seller) {
+
+        String insertQuery = "UPDATE seller SET Name = ?, Email = ?, BirthDate = ?," +
+                " BaseSalary = ?, DepartmentId = ? " +
+                " WHERE Id = ?";
+
+        PreparedStatement statement = null;
+
+        try {
+
+            statement = conn.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS);
+
+            statement.setString(1, seller.getName());
+            statement.setString(2, seller.getEmail());
+            statement.setDate(3, Date.valueOf(seller.getBirthDate()));
+            statement.setDouble(4, seller.getBaseSalary());
+            statement.setInt(5, seller.getDepartment().getId());
+            statement.setInt(6, seller.getId());
+
+            if (statement.executeUpdate() == 0) {
+
+                throw new DbException("Unexpected error! No rows affected!");
+            }
+
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally {
+            DB.closeStatement(statement);
+        }
 
     }
 

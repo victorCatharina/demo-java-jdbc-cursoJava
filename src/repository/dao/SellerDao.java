@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface SellerDao {
 
-    void insert(Seller seller);
+    Integer insert(Seller seller);
 
     void update(Seller seller);
 
