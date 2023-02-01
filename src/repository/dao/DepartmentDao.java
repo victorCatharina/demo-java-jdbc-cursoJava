@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface DepartmentDao {
 
-    void insert(Department department);
+    Integer insert(Department department);
 
     void update(Department department);
 

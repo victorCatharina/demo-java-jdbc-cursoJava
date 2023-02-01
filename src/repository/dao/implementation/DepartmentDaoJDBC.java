@@ -5,10 +5,7 @@ import db.DbException;
 import repository.dao.DepartmentDao;
 import repository.entities.Department;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -24,7 +21,32 @@ public class DepartmentDaoJDBC implements DepartmentDao {
     }
 
     @Override
-    public void insert(Department department) {
+    public Integer insert(Department department) {
+
+        String insertQuery = "INSERT INTO department (name) VALUES (?)";
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+
+            statement = conn.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS);
+            statement.setString(1, department.getName());
+
+            if (statement.executeUpdate() == 0) {
+                throw new DbException("Unexpected error! No rows affected");
+            }
+
+            resultSet = statement.getGeneratedKeys();
+            resultSet.next();
+
+            return resultSet.getInt(1);
+
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally {
+            DB.closeStatement(statement);
+            DB.closeResultSet(resultSet);
+        }
 
     }
 
