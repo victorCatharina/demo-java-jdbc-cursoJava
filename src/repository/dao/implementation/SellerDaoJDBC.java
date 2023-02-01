@@ -14,7 +14,7 @@ public class SellerDaoJDBC implements SellerDao {
 
     private final Connection conn;
 
-    private final static StringBuilder BASE_CONSULT_QUERY = new StringBuilder("SELECT s.Id, s.Name, s.Email, s.BirthDate, ")
+    private final static StringBuilder BASE_QUERY = new StringBuilder("SELECT s.Id, s.Name, s.Email, s.BirthDate, ")
             .append("s.BaseSalary, d.Id as departmentId, d.Name as depName ")
             .append("FROM seller s ")
             .append("INNER JOIN department d ON s.DepartmentId = d.id ");
@@ -126,7 +126,7 @@ public class SellerDaoJDBC implements SellerDao {
         ResultSet resultSet = null;
 
         try {
-            statement = conn.prepareStatement(BASE_CONSULT_QUERY.toString()
+            statement = conn.prepareStatement(BASE_QUERY.toString()
                     .concat("WHERE s.Id = ? "));
 
             statement.setInt(1, id);
@@ -163,7 +163,7 @@ public class SellerDaoJDBC implements SellerDao {
 
         try {
 
-            statement = conn.prepareStatement(BASE_CONSULT_QUERY.toString()
+            statement = conn.prepareStatement(BASE_QUERY.toString()
                     .concat(" WHERE s.DepartmentId = ?"));
 
             statement.setInt(1, department.getId());
@@ -204,7 +204,7 @@ public class SellerDaoJDBC implements SellerDao {
 
         try {
 
-            statement = conn.prepareStatement(BASE_CONSULT_QUERY.toString());
+            statement = conn.prepareStatement(BASE_QUERY.toString());
             resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
