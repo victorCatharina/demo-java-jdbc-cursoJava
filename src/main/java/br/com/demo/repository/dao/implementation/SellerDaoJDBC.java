@@ -1,10 +1,10 @@
-package repository.dao.implementation;
+package br.com.demo.repository.dao.implementation;
 
-import db.DB;
-import db.DbException;
-import repository.dao.SellerDao;
-import repository.entities.Department;
-import repository.entities.Seller;
+import br.com.demo.db.DB;
+import br.com.demo.db.DbException;
+import br.com.demo.repository.dao.SellerDao;
+import br.com.demo.repository.entities.Department;
+import br.com.demo.repository.entities.Seller;
 
 import java.sql.Date;
 import java.sql.*;

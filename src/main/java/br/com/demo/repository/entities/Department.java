@@ -1,4 +1,4 @@
-package repository.entities;
+package br.com.demo.repository.entities;
 
 import java.io.Serial;
 import java.io.Serializable;

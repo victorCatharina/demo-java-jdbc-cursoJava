@@ -1,6 +1,6 @@
-package repository.dao;
+package br.com.demo.repository.dao;
 
-import repository.entities.Department;
+import br.com.demo.repository.entities.Department;
 
 import java.util.List;
 import java.util.Optional;

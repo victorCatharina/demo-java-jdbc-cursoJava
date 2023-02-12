@@ -1,9 +1,9 @@
-package repository.dao.implementation;
+package br.com.demo.repository.dao.implementation;
 
-import db.DB;
-import db.DbException;
-import repository.dao.DepartmentDao;
-import repository.entities.Department;
+import br.com.demo.db.DB;
+import br.com.demo.db.DbException;
+import br.com.demo.repository.dao.DepartmentDao;
+import br.com.demo.repository.entities.Department;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -157,8 +157,8 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 
     private Department instantiateDepartment(ResultSet resultSet) throws SQLException {
 
-        return new Department(resultSet.getInt("departmentId"),
-                resultSet.getString("depName"));
+        return new Department(resultSet.getInt("Id"),
+                resultSet.getString("Name"));
 
     }
 }

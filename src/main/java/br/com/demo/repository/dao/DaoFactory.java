@@ -1,8 +1,8 @@
-package repository.dao;
+package br.com.demo.repository.dao;
 
-import db.DB;
-import repository.dao.implementation.DepartmentDaoJDBC;
-import repository.dao.implementation.SellerDaoJDBC;
+import br.com.demo.db.DB;
+import br.com.demo.repository.dao.implementation.DepartmentDaoJDBC;
+import br.com.demo.repository.dao.implementation.SellerDaoJDBC;
 
 public class DaoFactory {
 
